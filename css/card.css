@@ -1,0 +1,21 @@
+.link {
+  text-align: center;
+  color: #fff !important;
+  margin: 0 auto;
+}
+
+card-content ul {
+  text-decoration: none
+}
+
+.card-image img {
+  height: 200px;
+}
+
+.shop {
+  text-shadow: 2px 2px #000;
+}
+
+.distance {
+  margin-bottom: 40px !important;
+}

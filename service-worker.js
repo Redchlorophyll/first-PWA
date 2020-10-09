@@ -1,0 +1,69 @@
+const CACHE_NAME = 'submission v1.00';
+var urlsToCache = [
+  "/",
+  "/nav.html",
+  "/index.html",
+  "/pages/home.html",
+  "/pages/kontak.html",
+  "/pages/tentang.html",
+  "/pages/toko.html",
+  "/css/materialize.min.css",
+  "/css/card.css",
+  "/js/materialize.min.js",
+  "/js/nav.js",
+  "/icons/logo192x192.png",
+  "/icons/logo512x512.png",
+  "/img/amd logo.jpg",
+  "/img/DS.jpg",
+  "/img/i7.jpg",
+  "/img/mouse.jpg",
+  "/img/nvidia logo.png",
+  "/img/pc.jpg",
+  "/img/photo.jpg",
+  "/img/razer-logo.jpg",
+  "/img/rtx3080.jpg",
+  "/img/ryzen 7.jpg",
+  "/img/sepeda.jpg",
+  "/img/zhang.jpg",
+];
+
+self.addEventListener("install", function(event) {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(urlsToCache);
+    })
+  );
+});
+
+self.addEventListener("fetch", function(event) {
+  event.respondWith(
+    caches
+      .match(event.request, {cacheName: CACHE_NAME })
+      .then(function(response) {
+        if (response) {
+          console.log("serviceWorker: Gunakan Aset dari Cache: ", response.url);
+          return response;
+        }
+
+        console.log("ServiceWorker: Memuat aset dari Server: ",
+        event.request.url
+      );
+      return fetch(event.request);
+      })
+  );
+});
+
+self.addEventListener("activate", function(event) {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheName != CACHE_NAME) {
+            console.log("ServiceWorker: cache " + cacheName + " dihapus");
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
